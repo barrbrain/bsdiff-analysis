@@ -1,0 +1,10 @@
+[package]
+name = "bsdiff-analysis"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bsdiff = "0.2.1"
+lz4_flex = "0.12.0"
+tar = "0.4.44"
+xz4rust = "0.2.1"
