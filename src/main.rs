@@ -33,12 +33,24 @@ fn main() -> std::io::Result<()> {
         let next_edge = stack[len - 1].1.next().unwrap();
         let mut raw = lz4_flex::block::decompress(next_edge.1, 3 << 17).unwrap();
         if len > 1 {
+            let mut encoded = Vec::new();
+            aehobak::encode(&raw, &mut encoded).unwrap();
+            let compressed = lz4_flex::block::compress(&encoded);
             let preimage = &stack[len - 1].0;
             let mut postimage = Vec::new();
             bsdiff::patch(preimage, &mut raw.as_slice(), &mut postimage)?;
-            raw = postimage
+            let post_lz4 = lz4_flex::block::compress(&postimage);
+            println!(
+                "{} {} {} {} {} {}",
+                postimage.len(),
+                post_lz4.len(),
+                raw.len(),
+                next_edge.1.len(),
+                encoded.len(),
+                compressed.len()
+            );
+            raw = postimage;
         }
-        println!("{}", next_edge.0);
         if let Some(next) = edges.get(&next_edge.0) {
             stack.push((raw, next.iter()));
         } else {
