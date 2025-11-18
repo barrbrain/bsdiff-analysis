@@ -4,7 +4,7 @@ use xz4rust::XzReader;
 
 fn main() -> std::io::Result<()> {
     let archive = {
-        let file = File::open("msa.tpxz")?;
+        let file = File::open("corpus/msa.tpxz")?;
         let mut reader = XzReader::new(file);
         let mut archive = Vec::new();
         reader.read_to_end(&mut archive)?;
