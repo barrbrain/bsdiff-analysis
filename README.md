@@ -97,3 +97,20 @@ siso ninja -C out/Default chrome_public_apk
 ```
 
 The blobs collected in `BSDIFF_STORE` but not `RAW_STORE` form the content of this corpus.
+
+### Construct an approximally minimal spanning arborescence
+
+I have a truly marvelous implementation that this margin is too narrow to contain, but see:
+* Trend Micro Locality Sensitive Hash
+* Hierarchical Navigable Small World
+* bsdiff
+* LZ4
+* Tarjan's refinement of the Chu-Liu/Edmonds algorithm
+* Priority queue
+
+### Construct the corpus archive
+
+* Stored in lexicographic order of edges labeled `preimage-hash/postimage-hash`.
+* Where the preimage is the empty blob, just store LZ4-compressed postimage.
+* Otherwise, compute the `bsdiff` patch and store it LZ4-compressed.
+* Archive as `tar` in `xz`, using `pixz` to embed an index. (`.tpxz`)
