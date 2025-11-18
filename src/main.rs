@@ -1,14 +1,7 @@
-use std::fs::File;
-use std::io::Read;
-use xz4rust::XzReader;
-
 fn main() -> std::io::Result<()> {
     let archive = {
-        let file = File::open("corpus/msa.tpxz")?;
-        let mut reader = XzReader::new(file);
-        let mut archive = Vec::new();
-        reader.read_to_end(&mut archive)?;
-        archive.into_boxed_slice()
+        let file = std::fs::File::open("corpus/msa.tpxz")?;
+        liblzma::decode_all(file).unwrap().into_boxed_slice()
     };
     let edges = {
         let mut map = std::collections::BTreeMap::<String, Vec<(String, &[u8])>>::new();
